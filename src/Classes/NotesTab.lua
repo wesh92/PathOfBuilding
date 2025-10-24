@@ -3,6 +3,7 @@
 -- Module: Notes Tab
 -- Notes tab for the current build.
 --
+local markdown = require "markdown"
 local t_insert = table.insert
 
 local NotesTabClass = newClass("NotesTab", "ControlHost", "Control", function(self, build)
@@ -41,7 +42,8 @@ Below are some common color codes PoB uses:	]]
 	self.controls.intelligence = new("ButtonControl", { "TOPLEFT", self.controls.dexterity, "TOPLEFT" },
 		{ 120, 0, 100, 18 }, colorCodes.INTELLIGENCE .. "INTELLIGENCE",
 		function() self:SetColor(colorCodes.INTELLIGENCE) end)
-	self.controls.default = new("ButtonControl", { "TOPLEFT", self.controls.intelligence, "TOPLEFT" }, { 120, 0, 100, 18 },
+	self.controls.default = new("ButtonControl", { "TOPLEFT", self.controls.intelligence, "TOPLEFT" },
+		{ 120, 0, 100, 18 },
 		"^7DEFAULT", function() self:SetColor("^7") end)
 
 	self.controls.edit = new("EditControl", { "TOPLEFT", self.controls.fire, "TOPLEFT" }, { 0, 48, 0, 0 }, "", nil,
@@ -54,9 +56,9 @@ Below are some common color codes PoB uses:	]]
 	end
 	self.controls.toggleColorCodes = new("ButtonControl", { "TOPRIGHT", self, "TOPRIGHT" }, { -10, 70, 160, 20 },
 		"Show Color Codes", function()
-		self.showColorCodes = not self.showColorCodes
-		self:SetShowColorCodes(self.showColorCodes)
-	end)
+			self.showColorCodes = not self.showColorCodes
+			self:SetShowColorCodes(self.showColorCodes)
+		end)
 	self:SelectControl(self.controls.edit)
 	self.controls.renderView = new("EditControl", { "TOPLEFT", self.controls.edit, "TOPLEFT" }, { 0, 0, 0, 0 }, "", nil,
 		"^%C\t\n", nil, nil, 16, true)
@@ -68,8 +70,8 @@ Below are some common color codes PoB uses:	]]
 	-- A button to toggle between modes
 	self.controls.toggleRender = new("ButtonControl", { "TOPRIGHT", self, "TOPRIGHT" }, { -10, 92, 160, 20 },
 		"Render Markdown", function()
-		self:ToggleRenderView()
-	end)
+			self:ToggleRenderView()
+		end)
 end)
 
 function NotesTabClass:SetShowColorCodes(setting)
@@ -90,10 +92,10 @@ function NotesTabClass:SetColor(color)
 		self.controls.edit:Insert(text)
 	else
 		local lastColor = self.controls.edit:GetSelText():match(self.showColorCodes and "^.*(%^_x%x%x%x%x%x%x)" or
-		"^.*(%^x%x%x%x%x%x%x)") or "^7"
+			"^.*(%^x%x%x%x%x%x%x)") or "^7"
 		self.controls.edit:ReplaceSel(text ..
-		self.controls.edit:GetSelText():gsub(self.showColorCodes and "%^_x%x%x%x%x%x%x" or "%^x%x%x%x%x%x%x", "") ..
-		lastColor)
+			self.controls.edit:GetSelText():gsub(self.showColorCodes and "%^_x%x%x%x%x%x%x" or "%^x%x%x%x%x%x%x", "") ..
+			lastColor)
 	end
 end
 
